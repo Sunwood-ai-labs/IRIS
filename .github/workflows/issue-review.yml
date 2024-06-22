@@ -11,7 +11,7 @@ permissions:
 jobs:
   process_issue:
     runs-on: ubuntu-latest
-    steps:v
+    steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
