@@ -11,7 +11,7 @@ permissions:
 jobs:
   process_issue:
     runs-on: ubuntu-latest
-    steps:
+    steps:v
     - name: Checkout repository
       uses: actions/checkout@v2
 
@@ -23,7 +23,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install openai PyGithub
+        pip install openai==0.28
+        pip install PyGithub
+        pip install qdrant-client
+        pip install regex
 
     - name: Process Issue with LLM
       env:
