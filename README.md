@@ -5,12 +5,7 @@
 <h2 align="center">
   ～ Intelligent Repository Issue Solver ～
 <br>
-  <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/IRIS">
-<img alt="PyPI - Format" src="https://img.shields.io/pypi/format/IRIS">
-<img alt="PyPI - Implementation" src="https://img.shields.io/pypi/implementation/IRIS">
-<img alt="PyPI - Status" src="https://img.shields.io/pypi/status/IRIS">
-<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dd/IRIS">
-<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/IRIS">
+
 <a href="https://github.com/Sunwood-ai-labs/IRIS" title="Go to GitHub repo"><img src="https://img.shields.io/static/v1?label=IRIS&message=Sunwood-ai-labs&color=blue&logo=github"></a>
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Sunwood-ai-labs/IRIS">
 <a href="https://github.com/Sunwood-ai-labs/IRIS"><img alt="forks - Sunwood-ai-labs" src="https://img.shields.io/github/forks/IRIS/Sunwood-ai-labs?style=social"></a>
@@ -34,7 +29,6 @@
 >[!IMPORTANT]
 >このリポジトリのリリースノートやREADME、コミットメッセージの9割近くは[claude.ai](https://claude.ai/)や[ChatGPT4](https://chatgpt.com/)を活用した[AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II)で生成しています。
 
-# I.R.I.S（Intelligent Repository Issue Solver）
 
 ## 🌟 はじめに
 
@@ -45,6 +39,22 @@ I.R.I.S（Intelligent Repository Issue Solver）は、GitHubリポジトリの�
 - イシューの自動ラベリング
 - OpenAI GPT-4を使用したイシュー分析
 - GitHubアクションを通じた自動化プロセス
+
+## 📁 リポジトリ構造
+
+```
+IRIS/
+├─ .github/
+│  ├─ disabled-workflows/
+│  ├─ scripts/
+│  │  └─ process_issue.py
+│  └─ workflows/
+│     └─ issue-review.yml
+├─ docs/
+│  └─ .sourcesage_releasenotes.yml
+├─ issue_creator.log
+└─ README.md
+```
 
 ## 🛠️ インストールと設定
 
@@ -63,41 +73,14 @@ I.R.I.Sは新しいイシューが作成されると自動的に起動します�
 
 ## 📝 更新情報
 
-- バージョン1.0.0: 初期リリース
-- イシュー自動ラベリング機能の実装
+- [v0.1.0: 初期リリース](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.1.0): イシュー自動ラベリング機能の実装
 
-## 🤝 コントリビューション
+## 🔄 ワークフロー
 
-プロジェクトへの貢献を歓迎します！以下の方法で貢献できます：
-
-1. イシューを作成して改善点や問題点を報告
-2. 新機能の提案
-3. プルリクエストを送信してコードを改善
-
-## 📄 ライセンス
-
-このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
-
-## 🙏 謝辞
-
-- OpenAI - GPT-4の提供
-- GitHub - アクションと開発プラットフォームの提供
-- すべてのコントリビューターとユーザーの皆様
-
-
-```bash
-aira --mode=commit --config=.aira\config.IRIS.yml
-```
-
-```bash
-sourcesage --yaml-file=docs\.sourcesage_releasenotes.yml
-```
-
-
+I.R.I.Sは以下のワークフローを使用しています：
 
 ```mermaid
 %%{init:{'theme':'base','themeVariables':{'primaryColor':'#024959','primaryTextColor':'#F2C335','primaryBorderColor':'#F2AE30','lineColor':'#A1A2A6','secondaryColor':'#593E25','tertiaryColor':'#F2C335','noteTextColor':'#024959','noteBkgColor':'#F2C335','textColor':'#024959','fontSize':'18px'}}}%%
-
 sequenceDiagram
     participant 👤 as 🌟User
     participant 🐙 as 🐙GitHub
@@ -119,3 +102,32 @@ sequenceDiagram
     🐙-->>👤: 📨 更新通知
 ```
 
+## 🧪 開発用コマンド
+
+AIRAを使用してコミットメッセージを生成：
+```bash
+aira --mode=commit --config=.aira\config.IRIS.yml
+```
+
+SourceSageを使用してリリースノートを生成：
+```bash
+sourcesage --yaml-file=docs\.sourcesage_releasenotes.yml
+```
+
+## 🤝 コントリビューション
+
+プロジェクトへの貢献を歓迎します！以下の方法で貢献できます：
+
+1. イシューを作成して改善点や問題点を報告
+2. 新機能の提案
+3. プルリクエストを送信してコードを改善
+
+## 📄 ライセンス
+
+このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。
+
+## 🙏 謝辞
+
+- OpenAI - GPT-4の提供
+- GitHub - アクションと開発プラットフォームの提供
+- すべてのコントリビューターとユーザーの皆様
