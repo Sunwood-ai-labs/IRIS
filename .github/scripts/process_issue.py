@@ -1,61 +1,100 @@
 import os
-import openai
+from typing import List, Dict, Any
+from dotenv import load_dotenv
+from litellm import completion
 from github import Github
+from enum import Enum
 
-# GitHub APIクライアントの初期化
-g = Github(os.getenv("GITHUB_TOKEN"))
-repo = g.get_repo(os.getenv("GITHUB_REPOSITORY"))
-issue = repo.get_issue(number=int(os.getenv("ISSUE_NUMBER")))
+# 環境変数の読み込み
+load_dotenv()
 
-# OpenAI APIクライアントの初期化
-openai.api_key = os.getenv("OPENAI_API_KEY")
+class LLMModel(Enum):
+    # GEMINI = "gemini/gemini-pro"
+    # GPT4 = "gpt-4o"
+    # CLAUDE = "anthropic/claude-2"
+    MODEL_NAME = "gemini/gemini-1.5-pro-latest"
 
-# イシューの内容を取得
-issue_content = f"Title: {issue.title}\n\nBody: {issue.body}"
+class LLMIntegration:
+    def __init__(self):
+        self.github_token = os.getenv("GITHUB_TOKEN")
+        self.github_repo = os.getenv("GITHUB_REPOSITORY")
+        self.issue_number = int(os.getenv("ISSUE_NUMBER", 0))
+        self.setup_api_keys()
 
-# ラベル提案のためのプロンプト
-prompt = f"""
-以下はGitHubイシューの内容です。この内容を分析し、適切なラベルを提案してください。
-ラベルは以下のカテゴリから選択し、最大3つまで提案してください：
+    def setup_api_keys(self):
+        """異なるLLMプロバイダーのAPIキーを設定する"""
+        os.environ['GEMINI_API_KEY'] = os.getenv("GEMINI_API_KEY", "")
+        os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY", "")
+        os.environ['ANTHROPIC_API_KEY'] = os.getenv("ANTHROPIC_API_KEY", "")
 
-- bug: バグ報告
-- feature: 新機能リクエスト
-- enhancement: 既存機能の改善
-- documentation: ドキュメントの改善や追加
-- question: 質問
-- help wanted: 協力が必要
-- good first issue: 初心者向けの課題
+    def get_llm_response(self, model: LLMModel, messages: List[Dict[str, str]]) -> str:
+        """指定されたLLMモデルからレスポンスを取得する"""
+        try:
+            response = completion(model=model.value, messages=messages)
+            return response['choices'][0]['message']['content']
+        except Exception as e:
+            print(f"{model.value}からのレスポンス取得中にエラーが発生しました: {str(e)}")
+            return ""
 
-イシューの内容：
-{issue_content}
+    def analyze_github_issue(self) -> List[str]:
+        """GitHubイシューを分析し、ラベルを提案する"""
+        g = Github(self.github_token)
+        repo = g.get_repo(self.github_repo)
+        issue = repo.get_issue(number=self.issue_number)
 
-回答は以下の形式で提供してください：
-label1, label2, label3
-"""
+        issue_content = f"タイトル: {issue.title}\n\n本文: {issue.body}"
+        prompt = self.create_label_prompt(issue_content)
 
-# gpt-4oを使用してイシューを分析
-response = openai.ChatCompletion.create(
-  model="gpt-4o",
-  messages=[
-    {"role": "system", "content": "You are a helpful assistant that analyzes GitHub issues and suggests appropriate labels."},
-    {"role": "user", "content": prompt}
-  ],
-  max_tokens=50
-)
+        response = self.get_llm_response(LLMModel.MODEL_NAME, [
+            {"role": "system", "content": "あなたはGitHubイシューを分析し、適切なラベルを提案する助手です。"},
+            {"role": "user", "content": prompt}
+        ])
 
-# 提案されたラベルを取得
-suggested_labels = response.choices[0].message['content'].strip().split(', ')
+        return response.strip().split(', ')
 
-# イシューにラベルを適用
-for label in suggested_labels:
-    try:
-        issue.add_to_labels(label)
-        print(f"ラベル '{label}' を追加しました。")
-    except:
-        print(f"ラベル '{label}' の追加に失敗しました。")
+    @staticmethod
+    def create_label_prompt(issue_content: str) -> str:
+        """ラベル提案用のプロンプトを作成する"""
+        return f"""
+        以下のGitHubイシューを分析し、次のカテゴリから最大3つの適切なラベルを提案してください：
+        - bug: バグ報告
+        - feature: 新機能リクエスト
+        - enhancement: 既存機能の改善
+        - documentation: ドキュメントの改善や追加
+        - question: 質問
+        - help wanted: 協力が必要
+        - good first issue: 初心者向けの課題
 
-# ラベル追加の通知コメントを作成
-comment = f"I.R.I.Sが以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in suggested_labels])
-issue.create_comment(comment)
+        イシューの内容:
+        {issue_content}
 
-print("イシューの分析とラベリングが完了し、コメントが追加されました。")
+        回答は以下の形式で提供してください：
+        label1, label2, label3
+        """
+
+    def apply_labels_and_comment(self, labels: List[str]):
+        """提案されたラベルをイシューに適用し、コメントを追加する"""
+        g = Github(self.github_token)
+        repo = g.get_repo(self.github_repo)
+        issue = repo.get_issue(number=self.issue_number)
+
+        applied_labels = []
+        for label in labels:
+            try:
+                issue.add_to_labels(label)
+                applied_labels.append(label)
+                print(f"ラベル '{label}' が正常に追加されました。")
+            except Exception as e:
+                print(f"ラベル '{label}' の追加に失敗しました: {str(e)}")
+
+        comment = f"I.R.I.Sが以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in applied_labels])
+        issue.create_comment(comment)
+        print("イシューの分析とラベリングが完了し、コメントが追加されました。")
+
+def main():
+    llm_integration = LLMIntegration()
+    suggested_labels = llm_integration.analyze_github_issue()
+    llm_integration.apply_labels_and_comment(suggested_labels)
+
+if __name__ == "__main__":
+    main()
