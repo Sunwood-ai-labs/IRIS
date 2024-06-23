@@ -1,4 +1,4 @@
-name: Issue Task Breakdown
+name: イシュー自動ラベリング
 
 on:
   issues:
@@ -12,26 +12,27 @@ jobs:
   process_issue:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
+    - name: リポジトリのチェックアウト
       uses: actions/checkout@v2
 
-    - name: Set up Python
+    - name: Pythonのセットアップ
       uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: 依存関係のインストール
       run: |
         python -m pip install --upgrade pip
-        pip install openai==0.28
+        pip install litellm
         pip install PyGithub
-        pip install qdrant-client
-        pip install regex
+        pip install -q -U google-generativeai
 
-    - name: Process Issue with LLM
+    - name: LLMによるイシュー処理
       env:
         GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         ISSUE_NUMBER: ${{ github.event.issue.number }}
       run: python .github/scripts/process_issue.py

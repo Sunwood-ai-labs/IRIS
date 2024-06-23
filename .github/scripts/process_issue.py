@@ -1,12 +1,8 @@
 import os
 from typing import List, Dict, Any
-from dotenv import load_dotenv
 from litellm import completion
 from github import Github
 from enum import Enum
-
-# 環境変数の読み込み
-load_dotenv()
 
 class LLMModel(Enum):
     # GEMINI = "gemini/gemini-pro"
