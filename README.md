@@ -88,3 +88,34 @@ I.R.I.Sは新しいイシューが作成されると自動的に起動します�
 ```bash
 aira --mode=commit --config=.aira\config.IRIS.yml
 ```
+
+```bash
+sourcesage --yaml-file=docs\.sourcesage_releasenotes.yml
+```
+
+
+
+```mermaid
+%%{init:{'theme':'base','themeVariables':{'primaryColor':'#024959','primaryTextColor':'#F2C335','primaryBorderColor':'#F2AE30','lineColor':'#A1A2A6','secondaryColor':'#593E25','tertiaryColor':'#F2C335','noteTextColor':'#024959','noteBkgColor':'#F2C335','textColor':'#024959','fontSize':'18px'}}}%%
+
+sequenceDiagram
+    participant 👤 as 🌟User
+    participant 🐙 as 🐙GitHub
+    participant 🤖 as 🤖I.R.I.S
+    participant 🧠 as 🧠GPT-4
+    
+    👤->>🐙: 🎫 新しいイシューを作成
+    🐙->>🤖: 🚀 GitHub Action トリガー
+    activate 🤖
+    🤖->>🐙: 📥 イシュー内容を取得
+    🐙-->>🤖: 📄 イシュー詳細
+    🤖->>🧠: 🔍 内容を分析リクエスト
+    activate 🧠
+    🧠-->>🤖: 🏷️ ラベル提案
+    deactivate 🧠
+    🤖->>🐙: 🔖 ラベルを適用
+    🤖->>🐙: 💬 コメントを追加
+    deactivate 🤖
+    🐙-->>👤: 📨 更新通知
+```
+
