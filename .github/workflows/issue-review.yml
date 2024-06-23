@@ -25,6 +25,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install litellm
         pip install PyGithub
+        pip install -q -U google-generativeai
 
     - name: LLMによるイシュー処理
       env:
