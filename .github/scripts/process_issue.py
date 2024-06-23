@@ -83,7 +83,7 @@ class LLMIntegration:
             except Exception as e:
                 print(f"ラベル '{label}' の追加に失敗しました: {str(e)}")
 
-        comment = f"I.R.I.Sが以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in applied_labels])
+        comment = f"I.R.I.S Bot🤖が以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in applied_labels])
         issue.create_comment(comment)
         print("イシューの分析とラベリングが完了し、コメントが追加されました。")
 
