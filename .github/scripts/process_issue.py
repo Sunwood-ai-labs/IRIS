@@ -1,13 +1,12 @@
 import os
+import csv
+import re
 from typing import List, Dict, Any
 from litellm import completion
 from github import Github
 from enum import Enum
 
 class LLMModel(Enum):
-    # GEMINI = "gemini/gemini-pro"
-    # GPT4 = "gpt-4o"
-    # CLAUDE = "anthropic/claude-2"
     MODEL_NAME = "gemini/gemini-1.5-pro-latest"
 
 class LLMIntegration:
@@ -16,12 +15,28 @@ class LLMIntegration:
         self.github_repo = os.getenv("GITHUB_REPOSITORY")
         self.issue_number = int(os.getenv("ISSUE_NUMBER", 0))
         self.setup_api_keys()
+        self.labels = self.load_labels_from_csv()
 
     def setup_api_keys(self):
         """異なるLLMプロバイダーのAPIキーを設定する"""
         os.environ['GEMINI_API_KEY'] = os.getenv("GEMINI_API_KEY", "")
         os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY", "")
         os.environ['ANTHROPIC_API_KEY'] = os.getenv("ANTHROPIC_API_KEY", "")
+
+    def load_labels_from_csv(self) -> Dict[str, str]:
+        """CSVファイルからラベルと説明を読み込む"""
+        labels = {}
+        csv_path = os.path.join(os.path.dirname(__file__), '..', 'labels.csv')
+        with open(csv_path, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                labels[self.preprocess_label(row['label'])] = row['description']
+        return labels
+
+    @staticmethod
+    def preprocess_label(label: str) -> str:
+        """ラベルから空白とアスタリスクを削除する"""
+        return re.sub(r'[\s*]', '', label.lower())
 
     def get_llm_response(self, model: LLMModel, messages: List[Dict[str, str]]) -> str:
         """指定されたLLMモデルからレスポンスを取得する"""
@@ -46,20 +61,16 @@ class LLMIntegration:
             {"role": "user", "content": prompt}
         ])
 
-        return response.strip().split(', ')
+        suggested_labels = response.strip().split(', ')
+        return self.validate_labels(suggested_labels)
 
-    @staticmethod
-    def create_label_prompt(issue_content: str) -> str:
+    def create_label_prompt(self, issue_content: str) -> str:
         """ラベル提案用のプロンプトを作成する"""
+        label_descriptions = "\n".join([f"- {label}: {description}" for label, description in self.labels.items()])
         return f"""
         以下のGitHubイシューを分析し、次のカテゴリから最大3つの適切なラベルを提案してください：
-        - bug: バグ報告
-        - feature: 新機能リクエスト
-        - enhancement: 既存機能の改善
-        - documentation: ドキュメントの改善や追加
-        - question: 質問
-        - help wanted: 協力が必要
-        - good first issue: 初心者向けの課題
+
+        {label_descriptions}
 
         イシューの内容:
         {issue_content}
@@ -67,6 +78,17 @@ class LLMIntegration:
         回答は以下の形式で提供してください：
         label1, label2, label3
         """
+
+    def validate_labels(self, suggested_labels: List[str]) -> List[str]:
+        """提案されたラベルをCSVファイルのラベルリストと照合する"""
+        validated_labels = []
+        for label in suggested_labels:
+            preprocessed_label = self.preprocess_label(label)
+            if preprocessed_label in self.labels:
+                # オリジナルのラベル名（大文字小文字を保持）を使用
+                original_label = next(k for k in self.labels.keys() if self.preprocess_label(k) == preprocessed_label)
+                validated_labels.append(original_label)
+        return validated_labels
 
     def apply_labels_and_comment(self, labels: List[str]):
         """提案されたラベルをイシューに適用し、コメントを追加する"""
@@ -83,7 +105,7 @@ class LLMIntegration:
             except Exception as e:
                 print(f"ラベル '{label}' の追加に失敗しました: {str(e)}")
 
-        comment = f"I.R.I.Sが以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in applied_labels])
+        comment = f"I.R.I.S Bot🤖が以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}: {self.labels[self.preprocess_label(label)]}" for label in applied_labels])
         issue.create_comment(comment)
         print("イシューの分析とラベリングが完了し、コメントが追加されました。")
 
