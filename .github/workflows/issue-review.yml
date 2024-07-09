@@ -1,4 +1,4 @@
-name: イシュー自動ラベリング
+name: イシュー自動レビュー
 
 on:
   issues:
@@ -7,32 +7,31 @@ on:
 permissions:
   issues: write
   contents: read
+  pull-requests: write
 
 jobs:
-  process_issue:
+  review-issue:
     runs-on: ubuntu-latest
     steps:
-    - name: リポジトリのチェックアウト
-      uses: actions/checkout@v2
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v3
 
-    - name: Pythonのセットアップ
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Python のセットアップ
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
 
-    - name: 依存関係のインストール
-      run: |
-        python -m pip install --upgrade pip
-        pip install litellm
-        pip install PyGithub
-        pip install -q -U google-generativeai
+      - name: 依存関係のインストール
+        run: |
+          pip install -r requirements.txt
 
-    - name: LLMによるイシュー処理
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        GITHUB_REPOSITORY: ${{ github.repository }}
-        ISSUE_NUMBER: ${{ github.event.issue.number }}
-      run: python .github/scripts/process_issue.py
+      - name: スクリプトの実行
+        run: python .github/scripts/process_issue.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          YOUR_PERSONAL_ACCESS_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
