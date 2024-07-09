@@ -1,118 +1,68 @@
+import sys
 import os
 import csv
-import re
-from typing import List, Dict, Any
-from litellm import completion
-from github import Github
-from enum import Enum
 
-class LLMModel(Enum):
-    MODEL_NAME = "gemini/gemini-1.5-pro-latest"
+# Add the parent directory of 'scripts' to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-class LLMIntegration:
-    def __init__(self):
-        self.github_token = os.getenv("GITHUB_TOKEN")
-        self.github_repo = os.getenv("GITHUB_REPOSITORY")
-        self.issue_number = int(os.getenv("ISSUE_NUMBER", 0))
-        self.setup_api_keys()
-        self.labels = self.load_labels_from_csv()
+from loguru import logger
+from config import get_settings
+from services.llm_service import LLMService
+from services.github_service import GitHubService
 
-    def setup_api_keys(self):
-        """異なるLLMプロバイダーのAPIキーを設定する"""
-        os.environ['GEMINI_API_KEY'] = os.getenv("GEMINI_API_KEY", "")
-        os.environ['OPENAI_API_KEY'] = os.getenv("OPENAI_API_KEY", "")
-        os.environ['ANTHROPIC_API_KEY'] = os.getenv("ANTHROPIC_API_KEY", "")
-
-    def load_labels_from_csv(self) -> Dict[str, str]:
-        """CSVファイルからラベルと説明を読み込む"""
-        labels = {}
-        csv_path = os.path.join(os.path.dirname(__file__), '..', 'labels.csv')
-        with open(csv_path, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                labels[self.preprocess_label(row['label'])] = row['description']
-        return labels
-
-    @staticmethod
-    def preprocess_label(label: str) -> str:
-        """ラベルから空白とアスタリスクを削除する"""
-        return re.sub(r'[\s*]', '', label.lower())
-
-    def get_llm_response(self, model: LLMModel, messages: List[Dict[str, str]]) -> str:
-        """指定されたLLMモデルからレスポンスを取得する"""
-        try:
-            response = completion(model=model.value, messages=messages)
-            return response['choices'][0]['message']['content']
-        except Exception as e:
-            print(f"{model.value}からのレスポンス取得中にエラーが発生しました: {str(e)}")
-            return ""
-
-    def analyze_github_issue(self) -> List[str]:
-        """GitHubイシューを分析し、ラベルを提案する"""
-        g = Github(self.github_token)
-        repo = g.get_repo(self.github_repo)
-        issue = repo.get_issue(number=self.issue_number)
-
-        issue_content = f"タイトル: {issue.title}\n\n本文: {issue.body}"
-        prompt = self.create_label_prompt(issue_content)
-
-        response = self.get_llm_response(LLMModel.MODEL_NAME, [
-            {"role": "system", "content": "あなたはGitHubイシューを分析し、適切なラベルを提案する助手です。"},
-            {"role": "user", "content": prompt}
-        ])
-
-        suggested_labels = response.strip().split(', ')
-        return self.validate_labels(suggested_labels)
-
-    def create_label_prompt(self, issue_content: str) -> str:
-        """ラベル提案用のプロンプトを作成する"""
-        label_descriptions = "\n".join([f"- {label}: {description}" for label, description in self.labels.items()])
-        return f"""
-        以下のGitHubイシューを分析し、次のカテゴリから最大3つの適切なラベルを提案してください：
-
-        {label_descriptions}
-
-        イシューの内容:
-        {issue_content}
-
-        回答は以下の形式で提供してください：
-        label1, label2, label3
-        """
-
-    def validate_labels(self, suggested_labels: List[str]) -> List[str]:
-        """提案されたラベルをCSVファイルのラベルリストと照合する"""
-        validated_labels = []
-        for label in suggested_labels:
-            preprocessed_label = self.preprocess_label(label)
-            if preprocessed_label in self.labels:
-                # オリジナルのラベル名（大文字小文字を保持）を使用
-                original_label = next(k for k in self.labels.keys() if self.preprocess_label(k) == preprocessed_label)
-                validated_labels.append(original_label)
-        return validated_labels
-
-    def apply_labels_and_comment(self, labels: List[str]):
-        """提案されたラベルをイシューに適用し、コメントを追加する"""
-        g = Github(self.github_token)
-        repo = g.get_repo(self.github_repo)
-        issue = repo.get_issue(number=self.issue_number)
-
-        applied_labels = []
-        for label in labels:
-            try:
-                issue.add_to_labels(label)
-                applied_labels.append(label)
-                print(f"ラベル '{label}' が正常に追加されました。")
-            except Exception as e:
-                print(f"ラベル '{label}' の追加に失敗しました: {str(e)}")
-
-        comment = f"I.R.I.S Bot🤖が以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}: {self.labels[self.preprocess_label(label)]}" for label in applied_labels])
-        issue.create_comment(comment)
-        print("イシューの分析とラベリングが完了し、コメントが追加されました。")
+def load_labels_from_csv(csv_path):
+    labels = []
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            labels.append(row['label'])
+    return labels
 
 def main():
-    llm_integration = LLMIntegration()
-    suggested_labels = llm_integration.analyze_github_issue()
-    llm_integration.apply_labels_and_comment(suggested_labels)
+    logger.info("イシューの処理を開始します。")
+    
+    settings = get_settings()
+    llm_service = LLMService()
+    github_service = GitHubService()
+
+    logger.info("GitHubからイシューを取得しています...")
+    issue = github_service.get_issue()
+    logger.info(f"イシュー #{issue.number} を取得しました: {issue.title}")
+
+    logger.info("labels.csvからラベルのリストを読み込んでいます...")
+    csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'labels.csv')
+    existing_labels = load_labels_from_csv(csv_path)
+    logger.info(f"読み込まれたラベル: {', '.join(existing_labels)}")
+    
+    logger.info("LLMを使用してイシューを分析し、ラベルを提案しています...")
+    suggested_labels = llm_service.analyze_issue(issue.title, issue.body, existing_labels)
+    
+    label_list = [label.strip().replace("*", "") for label in suggested_labels.split(',')]
+    logger.info(f"提案されたラベル: {', '.join(label_list)}")
+
+    # 提案されたラベルを検証し、未登録のラベルをスキップ
+    validated_labels = []
+    skipped_labels = []
+    for label in label_list:
+        if label in existing_labels:
+            validated_labels.append(label)
+        else:
+            skipped_labels.append(label)
+
+    logger.info(f"検証済みのラベル: {', '.join(validated_labels)}")
+    if skipped_labels:
+        logger.warning(f"未登録のためスキップされたラベル: {', '.join(skipped_labels)}")
+
+    logger.info("検証済みのラベルをイシューに適用しています...")
+    github_service.add_labels(issue, validated_labels)
+
+    logger.info("イシューにコメントを追加しています...")
+    comment = f"I.R.I.S Bot🤖が以下のラベルを提案し、適用しました：\n\n" + "\n".join([f"- {label}" for label in validated_labels])
+    if skipped_labels:
+        comment += f"\n\n以下のラベルは未登録のためスキップされました：\n\n" + "\n".join([f"- {label}" for label in skipped_labels])
+    github_service.add_comment(issue, comment)
+
+    logger.info("イシューの処理が完了しました。")
 
 if __name__ == "__main__":
     main()
