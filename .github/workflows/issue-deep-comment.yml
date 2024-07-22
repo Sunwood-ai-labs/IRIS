@@ -84,4 +84,5 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           REPOSITORY_SUMMARY_PATH: .SourceSageAssets/DOCUMIND/Repository_summary.md
           YOUR_PERSONAL_ACCESS_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
+          YOUR_PERSONAL_ACCESS_TOKEN_IRIS: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
         run: python .github/scripts/suggest_changes.py 
