@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     REPOSITORY_SUMMARY_PATH: str = Field("", env="REPOSITORY_SUMMARY_PATH")
     model_config = SettingsConfigDict(env_file='.env', env_file_encoding='utf-8', extra='ignore')
     YOUR_PERSONAL_ACCESS_TOKEN: str = Field("", env="YOUR_PERSONAL_ACCESS_TOKEN")
+    YOUR_PERSONAL_ACCESS_TOKEN_IRIS: str = Field("", env="YOUR_PERSONAL_ACCESS_TOKEN_IRIS")
     # ALLOWED_USERS = ["github-actions[bot]", "Sunwood-ai-labs", "user2"]
 
 @lru_cache()

@@ -26,15 +26,15 @@ def main():
     logger.info("リポジトリの概要を読み込みました。")
 
     prompt = f"""
-    以下のGitHubイシューに対して、リポジトリの情報を踏まえた詳細なコメントを生成してください：
+以下のGitHubイシューに対して、リポジトリの情報を踏まえた詳細なコメントを生成してください：
 
-    イシュータイトル: {issue.title}
-    イシュー本文: {issue.body}
+イシュータイトル: {issue.title}
+イシュー本文: {issue.body}
 
-    リポジトリの概要:
-    {repository_summary}
+リポジトリの概要:
+{repository_summary}
 
-    詳細なコメント:
+詳細なコメント:
     """
 
     logger.info("LLMを使用して深いコメントを生成中...")
