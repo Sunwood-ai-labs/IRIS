@@ -32,7 +32,7 @@ jobs:
 
       - name: 依存関係のインストール
         run: |
-          pip install -r requirements.txt
+          pip install -r .github/requirements.txt
 
       - name: 詳細コメントの生成と追加
         env:
@@ -72,7 +72,7 @@ jobs:
 
       - name: 依存関係のインストール
         run: |
-          pip install -r requirements.txt
+          pip install -r .github/requirements.txt
 
       - name: 変更提案の生成と追加
         env:
