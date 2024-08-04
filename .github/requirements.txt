@@ -1,0 +1,7 @@
+litellm
+PyGithub
+google-generativeai
+loguru
+pydantic-settings
+pyyaml
+sourcesage
