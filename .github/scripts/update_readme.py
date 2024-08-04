@@ -45,6 +45,7 @@ def main():
     """
 
     logger.info("LLMに更新を依頼しています...")
+    logger.info(f"プロンプト：\n{prompt}")
     updated_readme = llm_service.get_response(prompt)
 
     # 更新されたREADMEの内容をファイルに書き込む
