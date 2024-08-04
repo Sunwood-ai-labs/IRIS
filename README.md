@@ -203,6 +203,7 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 
 このプロジェクトは[MITライセンス](LICENSE)の下で公開されています。使用、複製、変更、配布の際はライセンス条項をご確認ください。
 
+
 ## 🙏 謝辞
 
 - Google - Gemini AIの提供
