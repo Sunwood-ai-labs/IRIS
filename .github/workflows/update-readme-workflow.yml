@@ -36,40 +36,39 @@ jobs:
 
       - name: Gitユーザー設定
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
 
       - name: 変更の確認とコミット
         id: check_changes
         run: |
           git add README.md
           if git diff --staged --quiet; then
-            echo "No changes to commit"
-            echo "changes_detected=false" >> $GITHUB_OUTPUT
+            echo "changes=false" >> $GITHUB_OUTPUT
           else
             git commit -m "📝 リリース後のREADME更新"
-            echo "changes_detected=true" >> $GITHUB_OUTPUT
+            echo "changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: プルリクエストの作成
-        if: steps.check_changes.outputs.changes_detected == 'true'
-        id: create_pr
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 📝 リリース後のREADME更新
-          title: 📝 リリース後のREADME自動更新
-          body: |
-            このプルリクエストは、最新のリリースに基づいてREADMEを自動更新したものです。
-            内容を確認し、問題がなければマージしてください。
-          branch: update-readme-${{ github.run_id }}
-          base: main
-          labels: documentation, automated pr
-
-      - name: プルリクエストの自動マージ
-        if: steps.create_pr.outputs.pull-request-number
+      - name: 変更をプッシュしてプルリクエストを作成
+        if: steps.check_changes.outputs.changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ steps.create_pr.outputs.pull-request-number }}
         run: |
-          gh pr merge --auto --merge "$PR_NUMBER"
+          branch_name="update-readme-${{ github.run_id }}"
+          git checkout -b $branch_name
+          git push -u origin $branch_name
+          pr_url=$(gh pr create --title "📝 リリース後のREADME自動更新" --body "このプルリクエストは、最新のリリースに基づいてREADMEを自動更新したものです。内容を確認し、問題がなければマージしてください。" --base main --head $branch_name)
+          echo "PR_URL=$pr_url" >> $GITHUB_ENV
+
+      - name: プルリクエストの自動マージ
+        if: steps.check_changes.outputs.changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "$PR_URL" ]; then
+            pr_number=$(echo $PR_URL | awk -F'/' '{print $NF}')
+            gh pr merge $pr_number --auto --squash --delete-branch
+          else
+            echo "プルリクエストのURLが見つかりません。マージをスキップします。"
+          fi
