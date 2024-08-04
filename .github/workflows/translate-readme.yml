@@ -1,0 +1,66 @@
+name: READMEの翻訳
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'README.md'
+
+jobs:
+  translate-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: リポジトリのチェックアウト
+        uses: actions/checkout@v3
+
+      - name: Pythonのセットアップ
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: 依存関係のインストール
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r .github/requirements.txt
+
+      - name: READMEの翻訳
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          YOUR_PERSONAL_ACCESS_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
+          YOUR_PERSONAL_ACCESS_TOKEN_IRIS: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+        run: |
+          python .github/scripts/translate_readme.py
+
+      - name: 翻訳されたREADMEをコミット
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.en.md
+          git commit -m "docs: 英語READMEの更新"
+
+      - name: ブランチの作成とプッシュ
+        run: |
+          git checkout -b translate-readme-${{ github.run_id }}
+          git push origin translate-readme-${{ github.run_id }}
+
+      - name: プルリクエストの作成
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+          commit-message: docs: 英語READMEの更新
+          title: docs: 英語READMEの自動更新
+          body: |
+            このプルリクエストは、README.mdの変更に基づいて、README.en.mdを自動更新したものです。
+            内容を確認し、問題がなければマージしてください。
+          branch: translate-readme-${{ github.run_id }}
+          base: main
+          labels: documentation, automated pr
+
+      - name: プルリクエストの自動マージ
+        if: ${{ success() && github.ref == 'refs/heads/main' }} # mainブランチにマージされた場合のみ自動マージ
+        uses: pascalgn/automerge-pr@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
