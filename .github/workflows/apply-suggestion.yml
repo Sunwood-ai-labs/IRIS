@@ -27,7 +27,7 @@ jobs:
 
       - name: 依存関係のインストール
         run: |
-          pip install -r requirements.txt
+          pip install -r .github/requirements.txt
 
       - name: スクリプトの実行
         run: python .github/scripts/apply_suggestion.py
