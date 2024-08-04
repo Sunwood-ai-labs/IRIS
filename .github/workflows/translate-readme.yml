@@ -44,43 +44,20 @@ jobs:
         run: |
           python .github/scripts/translate_readme.py
 
-      - name: docsフォルダの内容を表示
-        run: |
-          echo "docsフォルダの内容:"
-          ls -la docs/
-          echo "README.en.mdの内容:"
-          if [ -f docs/README.en.md ]; then
-            cat docs/README.en.md
-          else
-            echo "README.en.mdファイルが存在しません。"
-          fi
-
-      - name: 変更の確認
+      - name: 変更の確認とコミット
         id: check_changes
-        run: |
-          if [ ! -f docs/README.en.md ]; then
-            echo "README.en.mdファイルが存在しません。新規作成とみなします。"
-            echo "changes=true" >> $GITHUB_OUTPUT
-          else
-            git add docs/README.en.md
-            if git diff --staged --exit-code; then
-              echo "変更はありません。"
-              echo "changes=false" >> $GITHUB_OUTPUT
-            else
-              echo "変更が検出されました。"
-              echo "changes=true" >> $GITHUB_OUTPUT
-              echo "変更の詳細:"
-              git diff --staged
-            fi
-          fi
-
-      - name: 翻訳されたREADMEをコミット
-        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add docs/README.en.md
-          git commit -m "docs: 英語READMEの更新"
+          if git diff --staged --quiet; then
+            echo "変更はありません。"
+            echo "changes=false" >> $GITHUB_OUTPUT
+          else
+            git commit -m "docs: 英語READMEの更新"
+            echo "変更が検出されました。"
+            echo "changes=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: ブランチをプッシュ
         if: steps.check_changes.outputs.changes == 'true'
@@ -89,7 +66,6 @@ jobs:
 
       - name: プルリクエストの作成
         if: steps.check_changes.outputs.changes == 'true'
-        id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
@@ -100,20 +76,7 @@ jobs:
             内容を確認し、問題がなければマージしてください。
           branch: translate-readme-${{ github.run_id }}
           base: main
-          labels: documentation, automated pr
-
-      - name: プルリクエストの自動マージ
-        if: ${{ steps.check_changes.outputs.changes == 'true' && success() && github.ref == 'refs/heads/main' }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
-          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
-        run: |
-          if [ -n "$PR_NUMBER" ]; then
-            gh pr merge --auto --merge "$PR_NUMBER"
-          else
-            echo "プルリクエスト番号が見つかりません。プルリクエストの作成に失敗した可能性があります。"
-            exit 1
-          fi
+          delete-branch: true
 
       - name: 変更がない場合のメッセージ
         if: steps.check_changes.outputs.changes == 'false'
