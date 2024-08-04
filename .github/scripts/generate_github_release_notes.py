@@ -15,11 +15,10 @@ def run_command(cmd):
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode != 0:
         logger.error(f"コマンド実行エラー: {result.stderr}")
-        # raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
     logger.info(f"コマンド出力: {result.stdout}")
     return result.stdout
 
-def run_sourcesage(previous_tag, latest_tag):
+def run_sourcesage():
     cmd = f"sourcesage --ignore-file=.iris.SourceSageignore"
     run_command(cmd)
 
@@ -56,17 +55,15 @@ def main():
     llm_service = LLMService()
     github_service = GitHubService()
 
-    previous_tag = os.getenv('PREVIOUS_TAG', '')
     latest_tag = os.getenv('LATEST_TAG', '')
 
     if not latest_tag:
         logger.error("環境変数 'LATEST_TAG' が設定されていません。")
         sys.exit(1)
 
-    logger.info(f"前回のタグ: {previous_tag}")
     logger.info(f"最新のタグ: {latest_tag}")
 
-    run_sourcesage(previous_tag, latest_tag)
+    run_sourcesage()
     update_yaml_file(latest_tag)
     prompt = generate_prompt(latest_tag)
 
