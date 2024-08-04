@@ -211,7 +211,6 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 
 ## ❓ ヘルプとサポート
 
-
 質問やサポートが必要な場合は、以下の方法でお問い合わせください：
 
 1. [GitHubのIssues](https://github.com/Sunwood-ai-labs/IRIS/issues)ページで新しいイシューを作成
