@@ -42,7 +42,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add README.en.md
+          git add docs/README.en.md
           git commit -m "docs: 英語READMEの更新"
 
       - name: ブランチの作成とプッシュ
