@@ -20,11 +20,11 @@ def main():
 
     # LLMに日本語のREADMEの英訳を依頼
     prompt = f"""
-    Please translate the following Japanese README into English:
+Please translate the following Japanese README into English:
 
-    ```
-    {readme_content}
-    ```
+```
+{readme_content}
+```
     """
 
     logger.info("LLMにREADMEの英訳を依頼しています...")
