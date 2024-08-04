@@ -35,6 +35,11 @@ jobs:
           
         run: python .github/scripts/update_readme.py
 
+      - name: Gitユーザー設定
+        run: |
+          git config --global user.name "iris-s-coon"
+          git config --global user.email "iris.sol.coon@gmail.com"
+
       - name: 変更の確認とコミット
         id: check_changes
         run: |
