@@ -50,8 +50,8 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
-          commit-message: docs: 英語READMEの更新
-          title: docs: 英語READMEの自動更新
+          commit-message: "docs: 英語READMEの更新"
+          title: "docs: 英語READMEの自動更新"
           body: |
             このプルリクエストは、README.mdの変更に基づいて、README.en.mdを自動更新したものです。
             内容を確認し、問題がなければマージしてください。
