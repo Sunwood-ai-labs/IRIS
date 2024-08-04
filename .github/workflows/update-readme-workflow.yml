@@ -5,8 +5,7 @@ on:
     types: [published]
 
 permissions:
-  issues: write
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -31,23 +30,26 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          YOUR_PERSONAL_ACCESS_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
-          YOUR_PERSONAL_ACCESS_TOKEN_IRIS: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
         run: python .github/scripts/update_readme.py
 
-      - name: 変更があれば新しいブランチを作成
+      - name: 変更があれば新しいブランチを作成してプッシュ
         run: |
-          git config --global user.name 'iris-s-coon'
-          git config --global user.email '	iris.sol.coon@gmail.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b update-readme-${{ github.run_id }}
           git add README.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "📝 リリース後のREADME更新" && git push origin update-readme-${{ github.run_id }})
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "📝 リリース後のREADME更新"
+            git push --set-upstream origin update-readme-${{ github.run_id }}
+          fi
 
       - name: プルリクエストの作成
         if: success()
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 📝 リリース後のREADME更新
           title: 📝 リリース後のREADME自動更新
           body: |
@@ -61,6 +63,6 @@ jobs:
     #     if: success()
     #     uses: peter-evans/enable-pull-request-automerge@v3
     #     with:
-    #       token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+    #       token: ${{ secrets.GITHUB_TOKEN }}
     #       pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
     #       merge-method: squash
