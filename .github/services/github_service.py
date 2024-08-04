@@ -31,3 +31,20 @@ class GitHubService:
         pr = self.repo.create_pull(title=title, body=body, head=head, base=base)
         logger.info(f"Pull Requestを作成しました: {pr.html_url}")
         return pr
+
+    def create_release(self, tag_name: str, release_notes: str):
+        """
+        指定されたタグ名でGitHubリリースを作成し、生成されたリリースノートを設定します。
+        """
+        try:
+            self.repo.create_git_release(
+                tag=tag_name,
+                name=f"Release {tag_name}",
+                message=release_notes,
+                draft=False,
+                prerelease=False
+            )
+            logger.info(f"GitHubリリース {tag_name} を作成しました。")
+        except Exception as e:
+            logger.error(f"GitHubリリースの作成中にエラーが発生しました: {str(e)}")
+            raise
