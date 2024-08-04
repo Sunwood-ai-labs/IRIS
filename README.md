@@ -51,7 +51,6 @@ I.R.I.S（Intelligent Repository Issue Solver）は、GitHubリポジトリの�
 - ✅リリースノートの作成時にREADMEを自動更新
 - ✅READMEが更新されると同時に英語版README作成
 
-
 ## 📁 リポジトリ構造
 
 ```bash
