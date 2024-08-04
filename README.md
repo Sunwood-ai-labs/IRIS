@@ -121,29 +121,52 @@ IRISの動作フローを以下の図で説明します：
 
 ```mermaid
 %%{init:{'theme':'base','themeVariables':{'primaryColor':'#024959','primaryTextColor':'#F2C335','primaryBorderColor':'#F2AE30','lineColor':'#A1A2A6','secondaryColor':'#593E25','tertiaryColor':'#F2C335','noteTextColor':'#024959','noteBkgColor':'#F2C335','textColor':'#024959','fontSize':'18px'}}}%%
+
 sequenceDiagram
-    participant 👤 as 🌟User
-    participant 🐙 as 🐙GitHub
-    participant 🤖 as 🤖I.R.I.S
-    participant 🧠 as 🧠AI Models
-    participant 📋 as 📋CSV Labels
-    
-    👤->>🐙: 🎫 新しいイシューを作成
-    🐙->>🤖: 🚀 GitHub Action トリガー
-    activate 🤖
-    🤖->>🐙: 📥 イシュー内容を取得
-    🐙-->>🤖: 📄 イシュー詳細
-    🤖->>🧠: 🔍 内容を分析リクエスト
-    activate 🧠
-    🧠-->>🤖: 🏷️ ラベル提案
-    deactivate 🧠
-    🤖->>📋: 🔍 提案されたラベルを照合
-    📋-->>🤖: ✅ 有効なラベル
-    🤖->>🐙: 🔖 検証済みラベルを適用
-    🤖->>🐙: 💬 詳細コメントを追加
-    🤖->>🐙: 📝 変更提案を生成
-    deactivate 🤖
-    🐙-->>👤: 📨 更新通知
+    participant User as 👤 User
+    participant GitHub as 🐙 GitHub
+    participant IRIS as 🤖 I.R.I.S
+    participant AI as 🧠 AI Models
+    participant Labels as 📋 Labels
+
+    alt イシュー作成フェーズ
+        User->>GitHub: イシューを作成
+        GitHub->>IRIS: GitHub Action トリガー
+    end
+
+    alt イシュー分析フェーズ
+        IRIS->>GitHub: イシュー内容を取得
+        GitHub-->>IRIS: イシュー詳細
+        IRIS->>AI: 内容を分析リクエスト
+        AI-->>IRIS: 分析結果
+    end
+
+    alt ラベリングフェーズ
+        IRIS->>Labels: 提案されたラベルを照合
+        Labels-->>IRIS: 有効なラベル
+        IRIS->>GitHub: 検証済みラベルを適用
+    end
+
+    alt コメント生成フェーズ
+        IRIS->>AI: 詳細コメント生成リクエスト
+        AI-->>IRIS: 生成された詳細コメント
+        IRIS->>GitHub: 詳細コメントを追加
+    end
+
+    alt 変更提案フェーズ
+        IRIS->>AI: 変更提案生成リクエスト
+        AI-->>IRIS: 生成された変更提案
+        IRIS->>GitHub: 変更提案を追加
+    end
+
+    alt リリースノート生成フェーズ
+        GitHub->>IRIS: プルリクエストマージ通知
+        IRIS->>AI: リリースノート生成リクエスト
+        AI-->>IRIS: 生成されたリリースノート
+        IRIS->>GitHub: リリースノートを作成
+    end
+
+    GitHub-->>User: 更新通知
 ```
 
 ## 🧪 開発用コマンド（上級者向け）
