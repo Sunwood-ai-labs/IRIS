@@ -32,13 +32,12 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           YOUR_PERSONAL_ACCESS_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}
           YOUR_PERSONAL_ACCESS_TOKEN_IRIS: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
-          
         run: python .github/scripts/update_readme.py
 
       - name: Gitユーザー設定
         run: |
-          git config --global user.name "iris-s-coon"
-          git config --global user.email "iris.sol.coon@gmail.com"
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: 変更の確認とコミット
         id: check_changes
@@ -54,6 +53,7 @@ jobs:
 
       - name: プルリクエストの作成
         if: steps.check_changes.outputs.changes_detected == 'true'
+        id: create_pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -66,10 +66,10 @@ jobs:
           base: main
           labels: documentation, automated pr
 
-    #   - name: プルリクエストの自動マージ（オプション）
-    #     if: success()
-    #     uses: peter-evans/enable-pull-request-automerge@v3
-    #     with:
-    #       token: ${{ secrets.GITHUB_TOKEN }}
-    #       pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-    #       merge-method: squash
+      - name: プルリクエストの自動マージ
+        if: steps.create_pr.outputs.pull-request-number
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.create_pr.outputs.pull-request-number }}
+        run: |
+          gh pr merge --auto --merge "$PR_NUMBER"
