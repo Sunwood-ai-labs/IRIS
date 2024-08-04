@@ -5,12 +5,17 @@ on:
     types: [closed]
     branches:
       - main
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
 
 jobs:
   generate-release-notes:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')
+    if: |
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true && startsWith(github.head_ref, 'release/')) ||
+      (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
     steps:
       - name: リポジトリのチェックアウト
         uses: actions/checkout@v3
