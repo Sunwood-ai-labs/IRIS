@@ -38,6 +38,30 @@ def update_yaml_file(latest_tag):
     logger.info(f"YAMLファイルを更新しました: {yaml_path}")
 
 def generate_prompt(latest_tag):
+    
+    changelog_path = ".SourceSageAssets/Changelog/CHANGELOG_main.md"
+    
+    if not os.path.exists(changelog_path):
+        logger.warning(f"ファイルが見つかりません: {changelog_path}")
+        logger.info(".SourceSageAssetsフォルダのファイルツリーを表示します:")
+        
+        try:
+            tree_command = "tree .SourceSageAssets" if os.name != 'nt' else "tree /f /a .SourceSageAssets"
+            result = subprocess.run(tree_command, shell=True, check=True, capture_output=True, text=True)
+            logger.info(result.stdout)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"ファイルツリーの表示中にエラーが発生しました: {e}")
+            logger.info("代替方法でファイル一覧を表示します:")
+            for root, dirs, files in os.walk(".SourceSageAssets"):
+                level = root.replace(".SourceSageAssets", "").count(os.sep)
+                indent = " " * 4 * level
+                logger.info(f"{indent}{os.path.basename(root)}/")
+                sub_indent = " " * 4 * (level + 1)
+                for file in files:
+                    logger.info(f"{sub_indent}{file}")
+    else:
+        logger.info(f"ファイルが見つかりました: {changelog_path}")
+
     cmd = f"sourcesage --ss-mode=DocuMind --yaml-file=docs/.sourcesage_releasenotes_iris.yml"
     run_command(cmd)
     
