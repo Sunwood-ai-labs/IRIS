@@ -30,8 +30,9 @@ Please translate the following Japanese README into English:
     logger.info("LLMにREADMEの英訳を依頼しています...")
     translated_readme = llm_service.get_response(prompt)
 
+    os.makedirs("docs", exist_ok=True)
     # 翻訳されたREADMEの内容をファイルに書き込む
-    with open("README.en.md", "w", encoding="utf-8") as f:
+    with open("docs/README.en.md", "w", encoding="utf-8") as f:
         f.write(translated_readme)
 
     logger.info("READMEの英訳が完了しました。")
