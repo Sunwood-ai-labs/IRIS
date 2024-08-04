@@ -35,21 +35,20 @@ jobs:
           
         run: python .github/scripts/update_readme.py
 
-      - name: 変更があれば新しいブランチを作成してプッシュ
+      - name: 変更の確認とコミット
+        id: check_changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git checkout -b update-readme-${{ github.run_id }}
           git add README.md
           if git diff --staged --quiet; then
             echo "No changes to commit"
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
           else
             git commit -m "📝 リリース後のREADME更新"
-            git push --set-upstream origin update-readme-${{ github.run_id }}
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
           fi
 
       - name: プルリクエストの作成
-        if: success()
+        if: steps.check_changes.outputs.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
