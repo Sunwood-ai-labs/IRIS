@@ -53,7 +53,7 @@ I.R.I.S（Intelligent Repository Issue Solver）は、GitHubリポジトリの�
 
 ## 📁 リポジトリ構造
 
-```
+```bash
 IRIS/
 ├─ .github/
 │  ├─ scripts/
