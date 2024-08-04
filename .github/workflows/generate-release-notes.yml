@@ -20,7 +20,8 @@ jobs:
       - name: リポジトリのチェックアウト
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # すべての履歴とタグを取得
+          fetch-tags: true  # タグを明示的に取得
 
       - name: 最新のタグを取得
         id: get_tag
