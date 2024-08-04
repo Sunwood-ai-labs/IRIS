@@ -24,7 +24,7 @@ def main():
     latest_tag = os.getenv('LATEST_TAG', '')
 
     if not latest_tag:
-        logger.error("最新のタグが見つかりません。")
+        logger.error("環境変数 'LATEST_TAG' が設定されていません。")
         sys.exit(1)
 
     prompt = f"""
