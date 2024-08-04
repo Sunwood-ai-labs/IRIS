@@ -68,6 +68,7 @@ def main():
     prompt = generate_prompt(latest_tag)
 
     logger.info("LLMを使用してリリースノートを生成します。")
+    logger.debug(f"リリースノート生成プロンプト：{prompt}")
     release_notes = llm_service.get_response(prompt)
     logger.info(f"リリースノートの生成が完了しました。長さ: {len(release_notes)} 文字")
 
