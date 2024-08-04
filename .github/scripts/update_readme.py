@@ -29,13 +29,21 @@ def main():
     prompt = f"""
 以下の情報を元に、READMEを更新してください：
 
-最新のリリースノート:
-{latest_release.body}
+---
 
-現在のREADME:
+# 最新のリリースノート:
+    {latest_release.body}
+
+---
+
+# 現在のREADME:
+
 {readme_content}
 
-更新のガイドライン:
+---
+
+# 更新のガイドライン:
+
 1. 最新の機能や変更点を反映させてください。
 2. 既存の構造を維持しつつ、必要な箇所のみを更新してください。
 3. リリースノートの詳細すべてをREADMEに含める必要はありません。重要なポイントのみを簡潔に記載してください。
@@ -48,6 +56,8 @@ def main():
     logger.info(f"プロンプト：\n{prompt}")
     updated_readme = llm_service.get_response(prompt)
 
+    logger.info(f">> updated_readme：\n{updated_readme}")
+    
     # 更新されたREADMEの内容をファイルに書き込む
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(updated_readme)
