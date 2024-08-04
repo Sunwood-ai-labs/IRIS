@@ -7,7 +7,8 @@ on:
     types: [closed]
     branches:
       - main
-
+  workflow_dispatch:  # 手動実行のオプション
+  
 jobs:
   generate-release-notes:
     runs-on: ubuntu-latest
