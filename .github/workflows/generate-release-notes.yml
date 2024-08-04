@@ -20,8 +20,12 @@ jobs:
       - name: リポジトリのチェックアウト
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # すべての履歴とタグを取得
-          fetch-tags: true  # タグを明示的に取得
+          fetch-depth: 0
+
+      - name: タグの強制更新
+        run: |
+          git fetch --tags --force
+          git fetch --all --force
 
       - name: 最新のタグを取得
         id: get_tag
