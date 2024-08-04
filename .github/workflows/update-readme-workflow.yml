@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
 
+permissions:
+  issues: write
+  contents: read
+  pull-requests: write
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
@@ -32,8 +37,8 @@ jobs:
 
       - name: 変更があれば新しいブランチを作成
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'iris-s-coon'
+          git config --global user.email '	iris.sol.coon@gmail.com'
           git checkout -b update-readme-${{ github.run_id }}
           git add README.md
           git diff --quiet && git diff --staged --quiet || (git commit -m "📝 リリース後のREADME更新" && git push origin update-readme-${{ github.run_id }})
