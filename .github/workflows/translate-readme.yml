@@ -10,6 +10,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 jobs:
   translate-readme:
@@ -63,6 +64,15 @@ jobs:
         if: steps.check_changes.outputs.changes == 'true'
         run: |
           git push origin translate-readme-${{ github.run_id }}
+
+      - name: ラベルの確認と作成
+        if: steps.check_changes.outputs.changes == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+        run: |
+          if ! gh label list | grep -q "automated pr"; then
+            gh label create "automated pr" --color "#0E8A16" --description "自動生成されたプルリクエスト"
+          fi
 
       - name: プルリクエストの作成
         if: steps.check_changes.outputs.changes == 'true'
