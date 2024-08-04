@@ -18,6 +18,10 @@ jobs:
       - name: リポジトリのチェックアウト
         uses: actions/checkout@v3
 
+      - name: 新しいブランチの作成
+        run: |
+          git checkout -b translate-readme-${{ github.run_id }}
+
       - name: Pythonのセットアップ
         uses: actions/setup-python@v3
         with:
@@ -45,13 +49,12 @@ jobs:
           git add docs/README.en.md
           git commit -m "docs: 英語READMEの更新"
 
-      - name: ブランチの作成とプッシュ
+      - name: ブランチをプッシュ
         run: |
-          git checkout -b translate-readme-${{ github.run_id }}
           git push origin translate-readme-${{ github.run_id }}
 
       - name: プルリクエストの作成
-        id: create-pr  # このIDを追加
+        id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
