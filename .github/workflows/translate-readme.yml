@@ -64,7 +64,9 @@ jobs:
           labels: documentation, automated pr
 
       - name: プルリクエストの自動マージ
-        if: ${{ success() && github.ref == 'refs/heads/main' }} # mainブランチにマージされた場合のみ自動マージ
-        uses: pascalgn/automerge-pr@v1
-        with:
+        if: ${{ success() && github.ref == 'refs/heads/main' }}
+        env:
           GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          gh pr merge --auto --merge "$PR_NUMBER"
