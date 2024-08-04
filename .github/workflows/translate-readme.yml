@@ -66,17 +66,15 @@ jobs:
 
       - name: プルリクエストの作成
         if: steps.check_changes.outputs.changes == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
-          commit-message: "docs: 英語READMEの更新"
-          title: "docs: 英語READMEの自動更新"
-          body: |
-            このプルリクエストは、README.mdの変更に基づいて、README.en.mdを自動更新したものです。
-            内容を確認し、問題がなければマージしてください。
-          branch: translate-readme-${{ github.run_id }}
-          base: main
-          delete-branch: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN_IRIS }}
+        run: |
+          gh pr create --title "docs: 英語READMEの自動更新" \
+                       --body "このプルリクエストは、README.mdの変更に基づいて、README.en.mdを自動更新したものです。内容を確認し、問題がなければマージしてください。" \
+                       --base main \
+                       --head translate-readme-${{ github.run_id }} \
+                       --label "documentation" \
+                       --label "automated pr"
 
       - name: 変更がない場合のメッセージ
         if: steps.check_changes.outputs.changes == 'false'
