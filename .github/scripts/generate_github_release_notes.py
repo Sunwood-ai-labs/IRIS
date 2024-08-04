@@ -28,14 +28,15 @@ def main():
         sys.exit(1)
 
     prompt = f"""
-以下は、GitHubリポジトリの最新のタグと1つ前のタグの間の差分と、READMEの内容です。
+以下は、GitHubリポジトリの最新のタグと1つ前のタグの間の差分と、リポジトリのREADMEの内容です。
 これらの情報を基に、以下のテンプレートに従ってリリースノートを生成してください。
 生成されたリリースノートは、そのままGitHubのリリースページに掲載されます。
+出力にはmarkdownのコードブロックでは囲まずにそのまま出力して
 
 差分:
 {diff}
 
-README:
+リポジトリのREADME:
 {readme}
 
 テンプレート:
@@ -87,19 +88,16 @@ README:
 - 注意事項1の説明
 - 注意事項2の説明
 
----
-
-詳細な変更履歴は[CHANGELOG.md](https://github.com/your-repo/blob/main/CHANGELOG.md)をご覧ください。
-問題や提案がある場合は、[イシューを開いて](https://github.com/your-repo/issues/new)お知らせください。
 ```
 
-上記のテンプレートに基づいて、差分とREADMEの内容を反映したリリースノートを生成してください。
+上記のテンプレートに基づいて、READMEを参考に、差分の内容を反映したリリースノートを生成してください。
 各セクションの内容は、提供された情報に基づいて適切に調整してください。
 重要でないセクションは省略しても構いません。
 
     """
 
     logger.info("LLMを使用してリリースノートを生成します。")
+    logger.debug(f"リリースノート生成プロンプト\n{prompt}")
     release_notes = llm_service.get_response(prompt)
     logger.info("リリースノートの生成が完了しました。")
 
