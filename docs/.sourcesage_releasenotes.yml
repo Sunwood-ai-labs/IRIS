@@ -1,6 +1,7 @@
 ss-mode:
  - DocuMind
-docuMind-model: "gemini/gemini-1.5-pro-latest"
+# docuMind-model: "gemini/gemini-1.5-pro-latest"
+docuMind-model: "gpt-4o-mini"
 docuMind-db: ".SourceSageAssets/DOCUMIND/Repository_summary.md"
 docuMind-release-report: ".SourceSageAssets/RELEASE_REPORT/Report_v0.4.5.md"
 docuMind-changelog: ".SourceSageAssets/Changelog/CHANGELOG_main.md"
