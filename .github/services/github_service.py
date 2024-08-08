@@ -32,11 +32,15 @@ class GitHubService:
         logger.info(f"Pull Requestを作成しました: {pr.html_url}")
         return pr
 
-    def create_release(self, tag_name: str, release_notes: str):
+    def create_release(self, tag_name: str, release_notes: str, header_image_url: str = None):
         """
         指定されたタグ名でGitHubリリースを作成し、生成されたリリースノートを設定します。
+        ヘッダー画像のURLが提供された場合、それをリリースノートの先頭に追加します。
         """
         try:
+            if header_image_url:
+                release_notes = f"![Release Header]({header_image_url})\n\n{release_notes}"
+            
             self.repo.create_git_release(
                 tag=tag_name,
                 name=f"Release {tag_name}",
