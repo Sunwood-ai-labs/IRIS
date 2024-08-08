@@ -28,7 +28,7 @@ jobs:
       - name: SourceSage の実行
         run: |
           mkdir -p .SourceSageAssets/DOCUMIND/
-          sourcesage --ignore-file=".iris.SourceSageignore"
+          sourcesage --ignore-file=".github/repository_summary/.iris.SourceSageignore"
 
       - name: 依存関係のインストール
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: SourceSage の実行
         run: |
           mkdir -p .SourceSageAssets/DOCUMIND/
-          sourcesage --ignore-file=".iris.SourceSageignore"
+          sourcesage --ignore-file=".github/repository_summary/.iris.SourceSageignore"
 
       - name: 依存関係のインストール
         run: |
