@@ -46,7 +46,7 @@ Please translate the following Japanese README into English:
 
     logger.info("LLMにREADMEの英訳を依頼しています...")
     try:
-        translated_readme = llm_service.get_response(prompt)
+        translated_readme = llm_service.get_response(prompt, remove_code_block=True)
         logger.success("LLMからの英訳の取得が完了しました。")
         display_content_preview(translated_readme, "翻訳後のREADMEの冒頭")
     except Exception as e:
@@ -66,5 +66,4 @@ Please translate the following Japanese README into English:
     logger.info("READMEの英訳プロセスが正常に完了しました。")
 
 if __name__ == "__main__":
-    logger.add("readme_translation.log", rotation="1 day", retention="7 days")
     main()

@@ -5,3 +5,7 @@ loguru
 pydantic-settings
 pyyaml
 sourcesage
+matplotlib
+scipy
+scikit-learn
+webcolors
