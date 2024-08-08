@@ -10,7 +10,7 @@ class LLMService:
         self.max_retries = 5
         self.retry_delay = 60
 
-    def get_response(self, prompt: str) -> str:
+    def get_response(self, prompt: str, remove_code_block: bool = False) -> str:
         current_prompt = prompt
         for attempt in range(self.max_retries):
             try:
@@ -18,11 +18,18 @@ class LLMService:
                     model=self.model,
                     messages=[{"role": "user", "content": current_prompt}]
                 )
-                return response.choices[0].message.content.strip()
+                content = response.choices[0].message.content.strip()
+                
+                if remove_code_block:
+                    lines = content.split('\n')
+                    if len(lines) >= 2 and lines[0].startswith('```') and lines[-1].strip() == '```':
+                        # Remove the first and last line
+                        content = '\n'.join(lines[1:-1])
+                
+                return content
             except Exception as e:
                 logger.error(f"LLMからのレスポンス取得中にエラーが発生しました (試行 {attempt + 1}/{self.max_retries}): {str(e)}")
                 if attempt < self.max_retries - 1:
-                    # プロンプトの後ろ1割を削除
                     current_prompt = current_prompt[:int(len(current_prompt) * 0.5)]
                     num_lines = current_prompt.count('\n') + 1
                     logger.info(f"プロンプトを短縮しました。新しい長さ: {len(current_prompt)} 文字, {num_lines} 行")
