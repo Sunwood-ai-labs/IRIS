@@ -116,7 +116,8 @@ IRISを設定したら、以下のように動作します：
 
 ## 📝 更新情報
 
-- [v0.4.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.4.0): 自動リリースノート生成機能の追加、GitHub Serviceの改善
+- [v0.5.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.0): リリースノートの自動生成、READMEの自動更新、ヘッダー画像の生成など、新たな機能が追加されました。
+- [v0.4.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.4.0): 自動リリースノート生成機能の追加(実験的機能)、GitHub Serviceの改善
 - [v0.3.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.3.0): 詳細コメント生成機能、変更提案機能の追加
 - [v0.2.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.2.0): Google Generative AI統合、ラベル管理システムの改善、ユーザビリティの向上
 - [v0.1.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.1.0): イシュー自動ラベリング機能の実装
