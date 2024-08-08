@@ -42,6 +42,7 @@ def main():
 
     prompt = f"""
 以下の情報を元に、下記の更新のガイドラインに従って既存のREADMEを更新してください：
+各セクションはHTMLのタグで囲ってあります。
 
 # 更新のガイドライン:
 <Update guidelines>
@@ -52,6 +53,7 @@ def main():
 5. リポジトリ中身を深く観察し存在しないファイルへのパスは記載しないで
 6. READMEの上にリリースノートを付けるような形式ではなく、READMEの中身の各章を更新する形式で更新してください。
 更新されたREADMEの全文をそのまま出力してください。
+
 </Update guidelines>
 
 # 最新のリリース情報:
@@ -61,9 +63,9 @@ def main():
 {latest_release.body}
 </Latest release information>
 
-# リポジトリのサマリー:
+# README:
 <Repository summary>
-{repo_summary_content}
+{readme_content}
 </Repository summary>
 
     """
