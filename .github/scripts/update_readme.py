@@ -67,8 +67,9 @@ def main():
 </Latest release information>
 
 # 更新して欲しいREADME:
+<readme>
 {readme_content}
-
+</readme>
 
 # [参考資料] リポジトリの全体情報
 下記にはリポジトリの構造とリポジトリ内の主要なファイルの一覧を記載します。
