@@ -114,7 +114,8 @@ IRISを設定したら、以下のように動作します：
 
 ## 📝 更新情報
 
-- **[v0.5.4](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.4):** 英語READMEの更新、SourceSageの設定ファイルのバージョン情報の更新、不要なREADMEの記述の削除、README自動更新機能の改善、いくつかのコード変更。 
+- **[v0.5.5](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.5):** README自動更新処理の改善、英語READMEの更新、ヘッダー画像の更新。 
+- [v0.5.4](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.4): 英語READMEの更新、SourceSageの設定ファイルのバージョン情報の更新、不要なREADMEの記述の削除、README自動更新機能の改善、いくつかのコード変更。 
 - [v0.5.3](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.3): READMEの自動更新、タグ付与によるリリースノート作成、英語README作成など、新機能と改善点が追加されました。
 - [v0.5.1](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.1): ドキュメントと構造を改善し、ユーザーエクスペリエンスを向上させました。
 - [v0.5.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.0): リリースノートの自動生成、READMEの自動更新、ヘッダー画像の生成など、新たな機能が追加されました。
