@@ -29,26 +29,26 @@
 </p>
 
 >[!IMPORTANT]
->This repository's release notes, README, and commit messages are generated using [claude.ai](https://claude.ai/) and [ChatGPT4](https://chatgpt.com/) in conjunction with [AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), and [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II).
+>Nearly 90% of the release notes, README, and commit messages in this repository are generated using [claude.ai](https://claude.ai/), [ChatGPT4](https://chatgpt.com/), and AI tools like [AIRA](https://github.com/Sunwood-ai-labs/AIRA), [SourceSage](https://github.com/Sunwood-ai-labs/SourceSage), [Gaiah](https://github.com/Sunwood-ai-labs/Gaiah), and [HarmonAI_II](https://github.com/Sunwood-ai-labs/HarmonAI_II).
 
-## 🌟 Getting Started
+## 🌟 Introduction
 
-I.R.I.S (Intelligent Repository Issue Solver) is an intelligent assistant designed to dramatically improve GitHub repository issue management. It leverages machine learning and natural language processing to automate issue classification, prioritization, and solution suggestions.
+IRIS (Intelligent Repository Issue Solver) is an intelligent assistant designed to dramatically improve GitHub repository issue management. It utilizes machine learning and natural language processing to automate issue classification, prioritization, and solution suggestion.
 
-This README provides a detailed explanation and step-by-step guide to help you get started, even if you're a beginner.
+This README provides detailed explanations and instructions to make it easy for everyone to use IRIS, even beginners.
 
 ## 🚀 Features
 
-- **Automatic Issue Labeling:** As new issues are created, AI analyzes their content and automatically assigns appropriate labels.
-- **Issue Analysis with Multiple AI Models:** Utilizes advanced natural language processing models like Google Gemini AI to deeply understand issue content.
-- **Automated Processes via GitHub Actions:** Operates 24/7 without human intervention.
+- **Automatic Issue Labeling:** When a new issue is created, AI analyzes its content and automatically assigns appropriate labels.
+- **Issue Analysis with Multiple AI Models:** IRIS leverages advanced natural language processing models, including Google Gemini AI, to deeply understand the content of issues.
+- **Automated Processes via GitHub Actions:** IRIS operates 24/7, automating tasks without human intervention.
 - **Customizable Label Management:** Easily define and manage project-specific labels through CSV files.
-- **Detailed Comment Generation:** Generates detailed comments that provide deeper insights into issues.
-- **Change Suggestions:** Generates specific change proposals based on issues, supporting pull request creation.
+- **Detailed Comment Generation:** Auto-generates detailed comments that offer deep insights for each issue.
+- **Change Suggestions:** Generates specific change suggestions based on the issue, supporting the creation of pull requests.
 - **Automatic Release Note Generation:** Generates release notes automatically using AI when pull requests are merged.
-- **README Auto-Update:** Reflects release note content in the README upon new releases.
-- **Automatic Release Note Creation with Tagging:** Creates release notes corresponding to tags when they are applied.
-- **English README Creation:** Generates an English version of the README whenever the original is updated.
+- **Automatic README Update:** Reflects release note content in the README when new releases occur.
+- **Automatic Release Note Creation with Tagging:** Automatically creates release notes corresponding to a tag when one is applied.
+- **English README Creation:** Creates an English version of the README when the original README is updated.
 
 ## 📁 Repository Structure
 
@@ -76,23 +76,23 @@ IRIS/
 
 1. **Clone the Repository:**
    - If you don't have a GitHub account, first [sign up for GitHub](https://github.com/join).
-   - Visit the [IRIS repository](https://github.com/Sunwood-ai-labs/IRIS) and click the green "Code" button.
-   - Choose "Download ZIP" to download the file and unzip it.
+   - Go to the [IRIS repository](https://github.com/Sunwood-ai-labs/IRIS) and click the green "Code" button.
+   - Select "Download ZIP" to download the file and unzip it.
 
 2. **Copy Workflow Files:**
-   - Locate all YAML files within the `.github/workflows/` directory of the unzipped folder.
+   - Find all YAML files in the `.github/workflows/` directory within the unzipped folder.
    - Copy these files to the `.github/workflows/` directory of your GitHub repository.
-     (Create the `.github/workflows/` directory if it doesn't exist.)
+     (Create the `.github/workflows/` directory if it doesn't exist)
 
-3. **Set up GitHub Secrets:**
-   - Go to your GitHub repository page and click the "Settings" tab.
-   - From the left-hand menu, select "Secrets and variables" → "Actions."
+3. **Set Up GitHub Secrets:**
+   - On your GitHub repository page, click the "Settings" tab.
+   - In the left menu, select "Secrets and variables" → "Actions."
    - Click the "New repository secret" button and add the following secrets:
      - `GITHUB_TOKEN`: Your GitHub personal access token.
      - `GEMINI_API_KEY`: Your Google AI Studio API key.
      - `YOUR_PERSONAL_ACCESS_TOKEN`: Your GitHub personal access token (requires write access to the repository).
      - `YOUR_PERSONAL_ACCESS_TOKEN_IRIS`: A special personal access token for the IRIS system.
-   - If you're unsure how to obtain these keys, refer to the documentation of each service or contact the developers.
+   - If you're unsure how to obtain these keys, refer to the documentation for each service or contact the developer.
 
 4. **Install Dependencies:**
    - Install the dependencies listed in the `requirements.txt` file.
@@ -102,28 +102,29 @@ IRIS/
 
 ## 🔧 Usage
 
-Once you've configured IRIS, here's how it works:
+Once IRIS is set up, it will operate as follows:
 
-1. When a new issue is created in your repository, IRIS automatically activates.
+1. When a new issue is created in your repository, IRIS will automatically activate.
 2. AI analyzes the content of the issue.
 3. Appropriate labels are suggested and automatically applied to the issue.
-4. A detailed comment is added to the issue.
-5. If necessary, change suggestions are generated.
-6. When pull requests are merged, release notes are generated automatically.
-7. Upon new releases, the release note content is automatically reflected in the README.
+4. Detailed comments are added to the issue.
+5. Change suggestions are generated if needed.
+6. Release notes are automatically generated when pull requests are merged.
+7. The README is automatically updated with the release note content when new releases occur.
 
-No special operations are required. Simply create new issues, and IRIS will handle the rest automatically.
+No special operations are required. Simply create a new issue, and IRIS will handle the process automatically.
 
-## 📝 Release Updates
+## 📝 Update Information
 
-- **[v0.5.4](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.4):** Updated English README, updated version information in SourceSage configuration files, removed unnecessary README descriptions, improved README auto-update functionality, and made several code changes.
-- [v0.5.3](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.3): Added new features and improvements, including automatic README updates, release note creation with tagging, and English README creation.
+- **[v0.5.5](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.5):** Improved README auto-update process, English README update, and header image update.
+- [v0.5.4](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.4): English README update, SourceSage configuration file version information update, removal of unnecessary README descriptions, improvements to the README auto-update function, and some code changes.
+- [v0.5.3](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.3): New features and improvements, including automatic README update, release note creation with tagging, and English README creation.
 - [v0.5.1](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.1): Improved documentation and structure for an enhanced user experience.
-- [v0.5.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.0): Added new features such as automatic release note generation, README auto-update, and header image generation.
-- [v0.4.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.4.0): Added automatic release note generation functionality (experimental feature), improvements to the GitHub service.
+- [v0.5.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.0): New features added, including automatic release note generation, automatic README update, and header image generation.
+- [v0.4.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.4.0): Added automatic release note generation feature (experimental), improved GitHub Service.
 - [v0.3.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.3.0): Added detailed comment generation and change suggestion features.
-- [v0.2.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.2.0): Google Generative AI integration, improved label management system, and enhanced usability.
-- [v0.1.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.1.0): Implemented automatic issue labeling functionality.
+- [v0.2.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.2.0): Google Generative AI integration, improved label management system, enhanced usability.
+- [v0.1.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.1.0): Implemented the automatic issue labeling feature.
 
 ## 🔄 Workflow
 
@@ -140,55 +141,55 @@ sequenceDiagram
     participant Labels as 📋 Labels
 
     alt Issue Creation Phase
-        User->>GitHub: Creates an issue
-        GitHub->>IRIS: Triggers GitHub Action
+        User->>GitHub: Create an issue
+        GitHub->>IRIS: Trigger GitHub Action
     end
 
     alt Issue Analysis Phase
-        IRIS->>GitHub: Retrieves issue content
+        IRIS->>GitHub: Retrieve issue content
         GitHub-->>IRIS: Issue details
-        IRIS->>AI: Requests content analysis
+        IRIS->>AI: Request analysis
         AI-->>IRIS: Analysis results
     end
 
     alt Labeling Phase
-        IRIS->>Labels: Matches suggested labels
+        IRIS->>Labels: Verify proposed labels
         Labels-->>IRIS: Valid labels
-        IRIS->>GitHub: Applies verified labels
+        IRIS->>GitHub: Apply verified labels
     end
 
     alt Comment Generation Phase
-        IRIS->>AI: Requests detailed comment generation
+        IRIS->>AI: Request detailed comment generation
         AI-->>IRIS: Generated detailed comment
-        IRIS->>GitHub: Adds detailed comment
+        IRIS->>GitHub: Add detailed comment
     end
 
     alt Change Suggestion Phase
-        IRIS->>AI: Requests change suggestion generation
+        IRIS->>AI: Request change suggestion generation
         AI-->>IRIS: Generated change suggestion
-        IRIS->>GitHub: Adds change suggestion
+        IRIS->>GitHub: Add change suggestion
     end
 
     alt Release Note Generation Phase
-        GitHub->>IRIS: Pull request merge notification
-        IRIS->>AI: Requests release note generation
+        GitHub->>IRIS: Notify of pull request merge
+        IRIS->>AI: Request release note generation
         AI-->>IRIS: Generated release notes
-        IRIS->>GitHub: Creates release notes
+        IRIS->>GitHub: Create release notes
     end
 
     alt README Update Phase
-        GitHub->>IRIS: Release event notification
-        IRIS->>AI: Requests README update
+        GitHub->>IRIS: Notify of release event
+        IRIS->>AI: Request README update
         AI-->>IRIS: Updated README content
-        IRIS->>GitHub: Updates README
+        IRIS->>GitHub: Update README
     end
 
-    GitHub-->>User: Sends update notification
+    GitHub-->>User: Send update notification
 ```
 
 ## 🧪 Development Commands (For Advanced Users)
 
-These commands are intended for those involved in developing IRIS:
+These commands are for those involved in IRIS development:
 
 Generate commit messages using AIRA:
 ```bash
@@ -202,13 +203,13 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 
 ## 🤝 Contributions
 
-Contributions to the project are welcome! Here's how you can contribute:
+Contributions to the project are welcome! You can contribute in the following ways:
 
-1. Create issues to report improvements or problems.
+1. Create an issue to report improvements or problems.
 2. Suggest new features.
-3. Submit pull requests to improve the code.
+3. Submit a pull request to improve the code.
 
-If you're new to contributing, check out the [First Contributions](https://github.com/firstcontributions/first-contributions) guide for help.
+If you are new to open-source contributions, check out the [First Contributions](https://github.com/firstcontributions/first-contributions) guide for help.
 
 ## 📄 License
 
@@ -216,16 +217,16 @@ This project is licensed under the [MIT License](LICENSE). Please review the lic
 
 ## 🙏 Acknowledgements
 
-- Google - for providing Gemini AI.
-- GitHub - for providing actions and a development platform.
+- Google - For providing Gemini AI.
+- GitHub - For providing actions and the development platform.
 - All contributors and users.
 
 ## ❓ Help and Support
 
-If you have any questions or need support, please reach out using the following methods:
+If you have any questions or need support, please contact us using the following methods:
 
 1. Create a new issue on the [GitHub Issues](https://github.com/Sunwood-ai-labs/IRIS/issues) page.
 2. Use the contact form on the [official website](https://hamaruki.com/).
 3. Send a direct message on [Twitter](https://x.com/hAru_mAki_ch).
 
-Don't hesitate to contact us, even if you're a beginner. We welcome your feedback!
+Don't hesitate to reach out, even if you're a beginner. We welcome your feedback!
