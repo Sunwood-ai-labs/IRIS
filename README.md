@@ -1,4 +1,3 @@
-
 <p align="center">
 <img src="https://huggingface.co/datasets/MakiAi/IconAssets/resolve/main/IRIS.png" width="100%">
 <br>
@@ -47,6 +46,7 @@ I.R.I.S（Intelligent Repository Issue Solver）は、GitHubリポジトリの�
 - 自動リリースノート生成：プルリクエストのマージ時に、AIを使用して自動的にリリースノートを生成します。
 - READMEの自動更新：新しいリリースが発生すると、リリースノートの内容をREADMEに反映します。
 - タグ付与での自動リリースノート作成：タグが付与されると、そのタグに対応するリリースノートが自動的に作成されます。
+- 英語README作成：READMEが更新されると、同時に英語版READMEが作成されます。
 
 ## 📁 リポジトリ構造
 
@@ -114,6 +114,7 @@ IRISを設定したら、以下のように動作します：
 
 ## 📝 更新情報
 
+- [v0.5.3](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.3): READMEの自動更新、タグ付与によるリリースノート作成、英語README作成など、新機能と改善点が追加されました。
 - [v0.5.1](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.1): ドキュメントと構造を改善し、ユーザーエクスペリエンスを向上させました。
 - [v0.5.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.0): リリースノートの自動生成、READMEの自動更新、ヘッダー画像の生成など、新たな機能が追加されました。
 - [v0.4.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.4.0): 自動リリースノート生成機能の追加(実験的機能)、GitHub Serviceの改善
