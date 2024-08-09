@@ -46,13 +46,16 @@ def main():
 
 # 更新のガイドライン:
 <Update guidelines>
-1. 最新のリリースで追加された主要な機能や重要な変更点のみをREADME内の適切な位置に簡潔に記載してください。詳細な更新情報は不要で、リリースノートのURLを記載しておいて。
+1. 最新のリリースで追加された主要な機能や重要な変更点のみをREADME内の適切な位置に簡潔に記載してください。
+2. 詳細な更新情報の記載は不要で、コミットハッシュなどは不要で、代わりに「![v1.11.1](https://github.com/Sunwood-ai-labs/AlphaExperiment/releases/tag/v1.11.1)」のようなリリースノートのURLを記載しておいて。
 2. 既存の構造を維持しつつ、必要な箇所のみを更新してください。
 3. 読みやすく、理解しやすい日本語で記述してください。
 4. 絵文字は適度に使用し、読みやすさを損なわないようにしてください。
 5. リポジトリ中身を深く観察し存在しないファイルへのパスは記載しないで
 6. READMEの上にリリースノートを付けるような形式ではなく、READMEの中身の各章を更新する形式で更新してください。
 更新されたREADMEの全文をそのまま出力してください。
+7. リポジトリの全体情報を加味してREADMEを更新して
+8. READMEへの更新情報への記載は1つのリリースノートにつき1行で簡潔にまとめて記載して。
 
 </Update guidelines>
 
@@ -63,10 +66,17 @@ def main():
 {latest_release.body}
 </Latest release information>
 
-# README:
-<Repository summary>
+# 更新して欲しいREADME:
 {readme_content}
-</Repository summary>
+
+
+# [参考資料] リポジトリの全体情報
+下記にはリポジトリの構造とリポジトリ内の主要なファイルの一覧を記載します。
+リリースノートを作成時の事前知識として参考に使用して
+
+<Repository information>
+    {repo_summary_content}
+</Repository information>
 
     """
 
