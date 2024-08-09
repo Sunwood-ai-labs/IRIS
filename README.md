@@ -1,6 +1,3 @@
-# README:
-<Repository summary>
-
 <p align="center">
 <img src="https://huggingface.co/datasets/MakiAi/IconAssets/resolve/main/IRIS.png" width="100%">
 <br>
@@ -230,5 +227,3 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 3. [Twitter](https://x.com/hAru_mAki_ch)でダイレクトメッセージを送信
 
 初心者の方も気軽にお問い合わせください。皆様のフィードバックをお待ちしています！
-
-</Repository summary>
