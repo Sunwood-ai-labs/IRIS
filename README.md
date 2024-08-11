@@ -263,6 +263,7 @@ IRISを導入することで、開発チームはコア機能の開発により�
 
 ## 📝 更新情報
 
+- **[v0.6.1](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.6.1):** IRIS v0.6.1 は、GitHub リポジトリのイシュー管理をさらに効率化するための新機能と改善点を含むマイナーリリースです。今回のリリースでは、IRIS を簡単にセットアップできる新しいパッケージ `iris-coon` が導入されました。 
 - **[v0.6.0](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.6.0):** Iris Coonパッケージの導入: IRISリポジトリをクローンし、.githubフォルダをコピーする機能を提供する新しいパッケージです。 
 - **[v0.5.5](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.5):** README自動更新処理の改善、英語READMEの更新、ヘッダー画像の更新。 
 - [v0.5.4](https://github.com/Sunwood-ai-labs/IRIS/releases/tag/v0.5.4): 英語READMEの更新、SourceSageの設定ファイルのバージョン情報の更新、不要なREADMEの記述の削除、README自動更新機能の改善、いくつかのコード変更。 
@@ -371,3 +372,4 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 3. [Twitter](https://x.com/hAru_mAki_ch)でダイレクトメッセージを送信
 
 初心者の方も気軽にお問い合わせください。皆様のフィードバックをお待ちしています！
+</readme>
