@@ -42,3 +42,4 @@ pegasus_surf.egg-info
 .aira
 
 docs
+*.log

@@ -42,3 +42,5 @@ pegasus_surf.egg-info
 .aira
 
 docs
+poetry.lock
+*.log

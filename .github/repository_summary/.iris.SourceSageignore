@@ -43,3 +43,5 @@ pegasus_surf.egg-info
 
 docs
 .github
+poetry.lock
+*.log
