@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iris-coon"
-version = "0.1.0"
+version = "0.6.1"
 description = "IRISリポジトリをクローンし、.githubフォルダをコピーするパッケージ"
 authors = ["Maki <sunwood.ai.labs@gmail.com>"]
 readme = "README.md"

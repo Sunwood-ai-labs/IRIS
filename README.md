@@ -15,6 +15,13 @@
 <img alt="GitHub Tag" src="https://img.shields.io/github/v/tag/Sunwood-ai-labs/IRIS?sort=semver&color=orange">
 <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Sunwood-ai-labs/IRIS/publish-to-pypi.yml">
 <br>
+  <img alt="PyPI - Version" src="https://img.shields.io/pypi/v/iris-coon">
+<img alt="PyPI - Format" src="https://img.shields.io/pypi/format/iris-coon">
+<img alt="PyPI - Implementation" src="https://img.shields.io/pypi/implementation/iris-coon">
+<img alt="PyPI - Status" src="https://img.shields.io/pypi/status/iris-coon">
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dd/iris-coon">
+<img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dw/iris-coon">
+<br>
 <p align="center">
   <a href="https://hamaruki.com/"><b>[🌐 Website]</b></a> •
   <a href="https://github.com/Sunwood-ai-labs"><b>[🐱 GitHub]</b></a>
@@ -70,47 +77,105 @@ IRIS/
 └─ README.md
 ```
 
-## 🛠️ インストールと設定（初心者向けステップバイステップガイド）
+## 🛠️ セットアップ方法
 
-1. **リポジトリのクローン**:
-   - GitHubアカウントをお持ちでない場合は、まず[GitHubに登録](https://github.com/join)してください。
-   - [IRIS リポジトリ](https://github.com/Sunwood-ai-labs/IRIS)にアクセスし、緑色の「Code」ボタンをクリックします。
-   - 「Download ZIP」を選択してファイルをダウンロードし、解凍します。
+IRISは以下の2つの方法でセットアップできます：
 
-2. **ワークフローファイルのコピー**:
-   - 解凍したフォルダ内の `.github/workflows/` ディレクトリにある全てのYAMLファイルを見つけます。
-   - これらのファイルをあなたのGitHubリポジトリの `.github/workflows/` ディレクトリにコピーします。
-     （`.github/workflows/` ディレクトリがない場合は作成してください）
+1. **iris-coonコマンドを使用する方法**
 
-3. **GitHubシークレットの設定**:
-   - GitHubリポジトリのページで「Settings」タブをクリックします。
-   - 左側のメニューから「Secrets and variables」→「Actions」を選択します。
-   - 「New repository secret」ボタンをクリックし、以下のシークレットを追加します：
-     - `GITHUB_TOKEN`: GitHubのパーソナルアクセストークン
-     - `GEMINI_API_KEY`: Google AI StudioのAPIキー
-     - `YOUR_PERSONAL_ACCESS_TOKEN`: GitHubのパーソナルアクセストークン（リポジトリへの書き込み権限が必要）
-     - `YOUR_PERSONAL_ACCESS_TOKEN_IRIS`: IRISシステム用の特別なパーソナルアクセストークン
-   - これらのキーの取得方法が分からない場合は、各サービスのドキュメントを参照するか、開発者に相談してください。
+   IRISをセットアップする最も簡単な方法は、`iris-coon`コマンドを使用することです。以下のコマンドでインストールとセットアップができます：
 
-4. **依存関係のインストール**:
-   - `requirements.txt` ファイルに記載された依存関係をインストールします。
+   ```bash
+   pip install iris-coon
+   iris-coon
    ```
-   pip install -r requirements.txt
+
+   このコマンドを実行すると、必要なファイルとフォルダが現在のディレクトリにコピーされます。
+
+2. **手動で.githubフォルダをコピーする方法**
+
+   IRISの機能を既存のプロジェクトに追加したい場合は、以下の手順で.githubフォルダを直接コピーできます：
+
+   ```bash
+   git clone https://github.com/Sunwood-ai-labs/IRIS.git
+   cp -r IRIS/.github /path/to/your/project/
    ```
+
+   この方法では、IRISの.githubフォルダとその内容が、指定したプロジェクトディレクトリにコピーされます。必要に応じて、コピーしたファイルを編集してプロジェクトに合わせてカスタマイズできます。
+
+### 🔐 GitHubシークレットの設定
+
+どちらのセットアップ方法を選択した場合も、IRISを正常に機能させるために以下のGitHubシークレットを設定する必要があります：
+
+1. GitHubリポジトリのページで「Settings」タブをクリックします。
+2. 左側のメニューから「Secrets and variables」→「Actions」を選択します。
+3. 「New repository secret」ボタンをクリックし、以下のシークレットを追加します：
+   - `GITHUB_TOKEN`: GitHubのパーソナルアクセストークン
+   - `GEMINI_API_KEY`: Google AI StudioのAPIキー
+   - `YOUR_PERSONAL_ACCESS_TOKEN`: GitHubのパーソナルアクセストークン（リポジトリへの書き込み権限が必要）
+   - `YOUR_PERSONAL_ACCESS_TOKEN_IRIS`: IRISシステム用の特別なパーソナルアクセストークン
+
+これらのキーの取得方法については、各サービスのドキュメントを参照するか、開発者に相談してください。
+
+### 💻 Pythonライブラリとしての使用
+
+IRISをPythonライブラリとして使用したい場合は、`example/demo.py`ファイルを参考にしてください。このデモファイルには、IRISの主要な機能を使用する方法が示されています。
+
+例えば：
+
+```python
+from iris_coon import IrisCoon
+
+# IRISのセットアップ
+coon = IrisCoon(target_dir="path/to/your/project", force=True)
+coon.run()
+```
+
+詳細な使用方法と高度な設定については、`example/demo.py`ファイルを確認してください。
 
 ## 🔧 使用方法
 
-IRISを設定したら、以下のように動作します：
+IRISをセットアップすると、以下の自動化された機能が利用可能になります：
 
-1. あなたのリポジトリに新しいイシューが作成されると、IRISが自動的に起動します。
-2. AIがイシューの内容を分析します。
-3. 適切なラベルが提案され、自動的にイシューに適用されます。
-4. 詳細なコメントがイシューに追加されます。
-5. 必要に応じて、変更提案が生成されます。
-6. プルリクエストがマージされると、自動的にリリースノートが生成されます。
-7. 新しいリリースが発生すると、リリースノートの内容がREADMEに自動的に反映されます。
+1. **イシュー管理の自動化**:
+   - 新しいイシューが作成されると、IRISが自動的に起動します。
+   - AIがイシューの内容を分析し、適切なラベルを提案・適用します。
+   - イシューに詳細なコメントが自動追加されます。
+   - 必要に応じて、コードの変更提案が生成されます。
 
-特別な操作は必要ありません。新しいイシューを作成するだけで、IRISが自動的に処理を行います。
+2. **リリース管理の自動化**:
+   - タグが付与されると、そのタグに対応する自動リリースノートが生成されます。
+   - 新しいリリースが発生すると、READMEが自動更新されます。
+
+3. **ドキュメンテーションの自動化**:
+   - READMEが更新されると、自動的に英語版README（`README.en.md`）が生成されます。
+
+### 🏷️ タグによる自動リリースノート生成
+
+新しいバージョンをリリースする準備ができたら、以下のようにタグを付けるだけです：
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+これにより、`v1.0.0`に対応する詳細なリリースノートが自動的に生成されます。
+
+### 📝 READMEの自動更新と翻訳
+
+1. リリースノートが生成されると、IRISはREADMEを自動更新し、新機能や重要な変更点を反映します。
+
+2. その後、更新されたREADMEの内容に基づいて、英語版の`README.en.md`が自動生成されます。
+
+### 🔄 継続的な改善
+
+これらの自動化プロセスにより、以下のメリットが得られます：
+
+- プロジェクトドキュメントが常に最新状態に保たれます。
+- 開発者の作業負荷が大幅に軽減されます。
+- 国際的なユーザーへのアクセシビリティが向上します。
+
+IRISを導入することで、開発チームはコア機能の開発により多くの時間を割くことができ、プロジェクト管理の効率が大幅に向上します。
 
 ## 📝 更新情報
 
@@ -139,51 +204,43 @@ sequenceDiagram
     participant AI as 🧠 AI Models
     participant Labels as 📋 Labels
 
-    alt イシュー作成フェーズ
+    alt イシュー管理の自動化
         User->>GitHub: イシューを作成
         GitHub->>IRIS: GitHub Action トリガー
-    end
-
-    alt イシュー分析フェーズ
         IRIS->>GitHub: イシュー内容を取得
         GitHub-->>IRIS: イシュー詳細
         IRIS->>AI: 内容を分析リクエスト
         AI-->>IRIS: 分析結果
-    end
-
-    alt ラベリングフェーズ
         IRIS->>Labels: 提案されたラベルを照合
         Labels-->>IRIS: 有効なラベル
         IRIS->>GitHub: 検証済みラベルを適用
-    end
-
-    alt コメント生成フェーズ
         IRIS->>AI: 詳細コメント生成リクエスト
         AI-->>IRIS: 生成された詳細コメント
         IRIS->>GitHub: 詳細コメントを追加
-    end
-
-    alt 変更提案フェーズ
         IRIS->>AI: 変更提案生成リクエスト
         AI-->>IRIS: 生成された変更提案
         IRIS->>GitHub: 変更提案を追加
+        GitHub-->>User: イシュー更新通知
     end
 
-    alt リリースノート生成フェーズ
-        GitHub->>IRIS: プルリクエストマージ通知
+    alt リリース管理の自動化
+        User->>GitHub: タグを作成/プッシュ
+        GitHub->>IRIS: タグイベント通知
         IRIS->>AI: リリースノート生成リクエスト
         AI-->>IRIS: 生成されたリリースノート
         IRIS->>GitHub: リリースノートを作成
+        GitHub-->>User: リリース通知
     end
 
-    alt README更新フェーズ
-        GitHub->>IRIS: リリースイベント通知
+    alt ドキュメンテーションの自動化
         IRIS->>AI: README更新リクエスト
         AI-->>IRIS: 更新されたREADME内容
         IRIS->>GitHub: READMEを更新
+        IRIS->>AI: 英語版README生成リクエスト
+        AI-->>IRIS: 生成された英語版README
+        IRIS->>GitHub: 英語版READMEを追加/更新
+        GitHub-->>User: ドキュメント更新通知
     end
-
-    GitHub-->>User: 更新通知
 ```
 
 ## 🧪 開発用コマンド（上級者向け）
@@ -230,4 +287,3 @@ sourcesage --ss-mode=DocuMind --yaml-file=docs\.sourcesage_releasenotes.yml
 3. [Twitter](https://x.com/hAru_mAki_ch)でダイレクトメッセージを送信
 
 初心者の方も気軽にお問い合わせください。皆様のフィードバックをお待ちしています！
-</readme>
