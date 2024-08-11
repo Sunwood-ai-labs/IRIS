@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "iris-coon"
+version = "0.1.0"
+description = "IRISリポジトリをクローンし、.githubフォルダをコピーするパッケージ"
+authors = ["Maki <sunwood.ai.labs@gmail.com>"]
+readme = "README.md"
+packages = [{include = "iris_coon"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+gitpython = "^3.1.43"
+click = "^8.1.7"
+rich = "^13.7.1"
+art = "^6.2"
+loguru = "^0.7.2"
+
+
+[tool.poetry.scripts]
+iris-coon = "iris_coon.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
